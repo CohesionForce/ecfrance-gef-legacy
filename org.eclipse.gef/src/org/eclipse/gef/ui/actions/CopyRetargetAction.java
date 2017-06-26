@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
 
@@ -28,12 +26,13 @@ public class CopyRetargetAction extends RetargetAction {
 	 */
 	public CopyRetargetAction() {
 		super(ActionFactory.COPY.getId(), GEFMessages.CopyAction_Label);
-		ISharedImages sharedImages = PlatformUI.getWorkbench()
-				.getSharedImages();
-		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
-		setDisabledImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_COPY_DISABLED));
+		// FIXME - IMAGES
+		// ISharedImages sharedImages = PlatformUI.getWorkbench()
+		// .getSharedImages();
+		// setImageDescriptor(sharedImages
+		// .getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
+		// setDisabledImageDescriptor(sharedImages
+		// .getImageDescriptor(ISharedImages.IMG_TOOL_COPY_DISABLED));
 	}
 
 }

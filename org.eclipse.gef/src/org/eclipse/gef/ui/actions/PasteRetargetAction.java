@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
 
@@ -29,12 +27,13 @@ public class PasteRetargetAction extends RetargetAction {
 	 */
 	public PasteRetargetAction() {
 		super(ActionFactory.PASTE.getId(), GEFMessages.PasteAction_Label);
-		ISharedImages sharedImages = PlatformUI.getWorkbench()
-				.getSharedImages();
-		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
-		setDisabledImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE_DISABLED));
+		//FIXME - IMAGES
+		// ISharedImages sharedImages = PlatformUI.getWorkbench()
+		// .getSharedImages();
+		// setImageDescriptor(sharedImages
+		// .getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
+		// setDisabledImageDescriptor(sharedImages
+		// .getImageDescriptor(ISharedImages.IMG_TOOL_PASTE_DISABLED));
 	}
 
 }

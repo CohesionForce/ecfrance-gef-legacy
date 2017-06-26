@@ -13,9 +13,7 @@ package org.eclipse.gef.ui.actions;
 import java.util.List;
 
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.gef.EditPart;
@@ -117,12 +115,13 @@ public class DeleteAction extends SelectionAction {
 		setText(GEFMessages.DeleteAction_Label);
 		setToolTipText(GEFMessages.DeleteAction_Tooltip);
 		setId(ActionFactory.DELETE.getId());
-		ISharedImages sharedImages = PlatformUI.getWorkbench()
-				.getSharedImages();
-		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-		setDisabledImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
+		//FIXME - IMAGES
+		// ISharedImages sharedImages = PlatformUI.getWorkbench()
+		// .getSharedImages();
+		// setImageDescriptor(sharedImages
+		// .getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+		// setDisabledImageDescriptor(sharedImages
+		// .getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 		setEnabled(false);
 	}
 

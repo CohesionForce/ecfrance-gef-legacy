@@ -13,8 +13,7 @@ package org.eclipse.gef.internal;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.jface.resource.JFaceResources;
 
 public class InternalImages {
 
@@ -94,9 +93,12 @@ public class InternalImages {
 		DESC_BLOCK_LTR = createDescriptor("icons/style_paragraph_ltr.gif"); //$NON-NLS-1$
 		DESC_BLOCK_RTL = createDescriptor("icons/style_paragraph_rtl.gif"); //$NON-NLS-1$
 
-		DESC_BLOCK_ALIGN_LEFT = createDescriptor("icons/style_paragraph_left.gif"); //$NON-NLS-1$
-		DESC_BLOCK_ALIGN_CENTER = createDescriptor("icons/style_paragraph_center.gif"); //$NON-NLS-1$
-		DESC_BLOCK_ALIGN_RIGHT = createDescriptor("icons/style_paragraph_right.gif"); //$NON-NLS-1$
+		DESC_BLOCK_ALIGN_LEFT = createDescriptor(
+				"icons/style_paragraph_left.gif"); //$NON-NLS-1$
+		DESC_BLOCK_ALIGN_CENTER = createDescriptor(
+				"icons/style_paragraph_center.gif"); //$NON-NLS-1$
+		DESC_BLOCK_ALIGN_RIGHT = createDescriptor(
+				"icons/style_paragraph_right.gif"); //$NON-NLS-1$
 
 		DESC_ZOOM_IN = createDescriptor("icons/zoom_in.gif"); //$NON-NLS-1$
 		DESC_ZOOM_OUT = createDescriptor("icons/zoom_out.gif"); //$NON-NLS-1$
@@ -116,16 +118,21 @@ public class InternalImages {
 		DESC_HORZ_ALIGN_RIGHT = createDescriptor("icons/alignright.gif"); //$NON-NLS-1$
 		DESC_VERT_ALIGN_TOP = createDescriptor("icons/aligntop.gif"); //$NON-NLS-1$
 
-		DESC_VERT_ALIGN_BOTTOM_DIS = createDescriptor("icons/alignbottom_d.gif"); //$NON-NLS-1$
-		DESC_HORZ_ALIGN_CENTER_DIS = createDescriptor("icons/aligncenter_d.gif"); //$NON-NLS-1$
+		DESC_VERT_ALIGN_BOTTOM_DIS = createDescriptor(
+				"icons/alignbottom_d.gif"); //$NON-NLS-1$
+		DESC_HORZ_ALIGN_CENTER_DIS = createDescriptor(
+				"icons/aligncenter_d.gif"); //$NON-NLS-1$
 		DESC_HORZ_ALIGN_LEFT_DIS = createDescriptor("icons/alignleft_d.gif"); //$NON-NLS-1$
 		DESC_VERT_ALIGN_MIDDLE_DIS = createDescriptor("icons/alignmid_d.gif"); //$NON-NLS-1$
 		DESC_HORZ_ALIGN_RIGHT_DIS = createDescriptor("icons/alignright_d.gif"); //$NON-NLS-1$
 		DESC_VERT_ALIGN_TOP_DIS = createDescriptor("icons/aligntop_d.gif"); //$NON-NLS-1$
 
 		DESC_SEPARATOR = createDescriptor("icons/separator.gif"); //$NON-NLS-1$
-		DESC_FOLDER_OPEN = PlatformUI.getWorkbench().getSharedImages()
-				.getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
+
+		// FIXME - IMAGES
+		DESC_FOLDER_OPEN = createDescriptor("icons/folder_closed.gif"); //$NON-NLS-1$
+		// DESC_FOLDER_OPEN = PlatformUI.getWorkbench().getSharedImages()
+		// .getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
 		DESC_FOLDER_CLOSED = createDescriptor("icons/folder_closed.gif"); //$NON-NLS-1$
 
 		ICON_MATCH_WIDTH = createDescriptor("icons/sizehz.gif"); //$NON-NLS-1$
@@ -152,8 +159,7 @@ public class InternalImages {
 	 */
 	private static ImageDescriptor createAndCache(String imageName) {
 		ImageDescriptor result = createDescriptor(imageName);
-		InternalGEFPlugin.getDefault().getImageRegistry()
-				.put(imageName, result);
+		JFaceResources.getImageRegistry().put(imageName, result);
 		return result;
 	}
 
@@ -169,7 +175,7 @@ public class InternalImages {
 	 * @return the image or null if it has not been cached in the registry
 	 */
 	public static Image get(String imageName) {
-		return InternalGEFPlugin.getDefault().getImageRegistry().get(imageName);
+		return JFaceResources.getImageRegistry().get(imageName);
 	}
 
 }

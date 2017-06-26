@@ -63,11 +63,9 @@ import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.XMLMemento;
 
 import org.eclipse.draw2d.ActionEvent;
@@ -196,14 +194,19 @@ public class FlyoutPaletteComposite extends Composite {
 		prefs = preferences;
 		sash = createSash();
 		paletteContainer = createPaletteContainer();
-		hookIntoWorkbench(page.getWorkbenchWindow());
+
+		// FIXME - IWorkbenchPage
+		// hookIntoWorkbench(page.getWorkbenchWindow());
 
 		// Initialize the state properly
 		if (prefs.getPaletteWidth() <= 0)
 			prefs.setPaletteWidth(DEFAULT_PALETTE_SIZE);
 		setPaletteWidth(prefs.getPaletteWidth());
 		setDockLocation(prefs.getDockLocation());
-		updateState(page);
+
+		// FIXME - IWorkbenchPage
+		setState(prefs.getPaletteState());
+		// updateState(page);
 
 		addListener(SWT.Resize, new Listener() {
 			public void handleEvent(Event event) {
@@ -283,8 +286,8 @@ public class FlyoutPaletteComposite extends Composite {
 	}
 
 	private Composite createPaletteContainer() {
-		return new PaletteComposite(this, SWT.NO_BACKGROUND
-				| SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
+		return new PaletteComposite(this,
+				SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED);
 	}
 
 	private Composite createSash() {
@@ -392,7 +395,8 @@ public class FlyoutPaletteComposite extends Composite {
 		update();
 	}
 
-	private void layoutComponentsEast(Rectangle area, int sashWidth, int pWidth) {
+	private void layoutComponentsEast(Rectangle area, int sashWidth,
+			int pWidth) {
 		if (isInState(STATE_COLLAPSED)) {
 			paletteContainer.setVisible(false);
 			sash.setBounds(area.x + area.width - sashWidth, area.y, sashWidth,
@@ -418,18 +422,19 @@ public class FlyoutPaletteComposite extends Composite {
 					pWidth, area.height);
 			sash.setVisible(true);
 			paletteContainer.setVisible(true);
-			graphicalControl.setBounds(area.x, area.y, area.width - sashWidth
-					- pWidth, area.height);
+			graphicalControl.setBounds(area.x, area.y,
+					area.width - sashWidth - pWidth, area.height);
 		}
 	}
 
-	private void layoutComponentsWest(Rectangle area, int sashWidth, int pWidth) {
+	private void layoutComponentsWest(Rectangle area, int sashWidth,
+			int pWidth) {
 		if (isInState(STATE_COLLAPSED)) {
 			paletteContainer.setVisible(false);
 			sash.setBounds(area.x, area.y, sashWidth, area.height);
 			sash.setVisible(true);
-			graphicalControl.setBounds(area.x + sashWidth, area.y, area.width
-					- sashWidth, area.height);
+			graphicalControl.setBounds(area.x + sashWidth, area.y,
+					area.width - sashWidth, area.height);
 		} else if (isInState(STATE_EXPANDED)) {
 			paletteContainer.setVisible(true);
 			paletteContainer.moveAbove(graphicalControl);
@@ -437,8 +442,8 @@ public class FlyoutPaletteComposite extends Composite {
 			sash.setBounds(area.x + pWidth, area.y, sashWidth, area.height);
 			paletteContainer.setBounds(area.x, area.y, pWidth, area.height);
 			sash.setVisible(true);
-			graphicalControl.setBounds(area.x + sashWidth, area.y, area.width
-					- sashWidth, area.height);
+			graphicalControl.setBounds(area.x + sashWidth, area.y,
+					area.width - sashWidth, area.height);
 		} else if (isInState(STATE_PINNED_OPEN)) {
 			paletteContainer.setVisible(true);
 			sash.setBounds(area.x + pWidth, area.y, sashWidth, area.height);
@@ -459,7 +464,8 @@ public class FlyoutPaletteComposite extends Composite {
 		});
 	}
 
-	private boolean restorePaletteState(PaletteViewer newPalette, IMemento state) {
+	private boolean restorePaletteState(PaletteViewer newPalette,
+			IMemento state) {
 		if (state != null) {
 			try {
 				return newPalette.restoreState(state);
@@ -536,8 +542,8 @@ public class FlyoutPaletteComposite extends Composite {
 							return;
 						Display.getCurrent().timerExec(250, new Runnable() {
 							public void run() {
-								if (isDescendantOf(graphicalControl, Display
-										.getCurrent().getCursorControl())
+								if (isDescendantOf(graphicalControl,
+										Display.getCurrent().getCursorControl())
 										&& isInState(STATE_EXPANDED))
 									setState(STATE_COLLAPSED);
 							}
@@ -832,18 +838,19 @@ public class FlyoutPaletteComposite extends Composite {
 				gc.setForeground(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
 				gc.drawLine(1, 0, 1, bounds.height);
 
-				gc.setForeground(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
+				gc.setForeground(
+						PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
 				gc.drawLine(2, 0, 2, bounds.height);
 			}
 		}
 
 		private void updateState() {
-			setCursor(isInState(STATE_EXPANDED | STATE_PINNED_OPEN) ? SharedCursors.SIZEWE
-					: null);
+			setCursor(isInState(STATE_EXPANDED | STATE_PINNED_OPEN)
+					? SharedCursors.SIZEWE : null);
 		}
 
-		private class SashDragManager extends MouseAdapter implements
-				MouseMoveListener {
+		private class SashDragManager extends MouseAdapter
+				implements MouseMoveListener {
 			protected boolean dragging = false;
 			protected boolean correctState = false;
 			protected boolean mouseDown = false;
@@ -921,8 +928,8 @@ public class FlyoutPaletteComposite extends Composite {
 		}
 	}
 
-	private class TitleDragManager extends MouseAdapter implements Listener,
-			MouseTrackListener {
+	private class TitleDragManager extends MouseAdapter
+			implements Listener, MouseTrackListener {
 		protected boolean switchDock = false;
 		protected boolean dragging = false;
 		protected int threshold;
@@ -958,7 +965,10 @@ public class FlyoutPaletteComposite extends Composite {
 									.getCursorControl();
 							Point pt = flyout.toControl(evt.x, evt.y);
 							switchDock = isDescendantOf(graphicalControl, ctrl)
-									&& ((dock == PositionConstants.WEST && pt.x > threshold - 10) || (dock == PositionConstants.EAST && pt.x < threshold + 10));
+									&& ((dock == PositionConstants.WEST
+											&& pt.x > threshold - 10)
+											|| (dock == PositionConstants.EAST
+													&& pt.x < threshold + 10));
 							boolean invalid = false;
 							if (!switchDock)
 								invalid = !isDescendantOf(
@@ -978,12 +988,14 @@ public class FlyoutPaletteComposite extends Composite {
 							if (switchDock) {
 								if (dock == PositionConstants.EAST)
 									placeHolder = new Rectangle(0, 0,
-											origBounds.width, origBounds.height);
+											origBounds.width,
+											origBounds.height);
 								else
 									placeHolder = new Rectangle(
 											flyoutBounds.width
-													- origBounds.width, 0,
-											origBounds.width, origBounds.height);
+													- origBounds.width,
+											0, origBounds.width,
+											origBounds.height);
 								placeHolder = Display.getCurrent().map(flyout,
 										null, placeHolder);
 							}
@@ -991,8 +1003,10 @@ public class FlyoutPaletteComposite extends Composite {
 							int cursor;
 							if (invalid)
 								cursor = DragCursors.INVALID;
-							else if ((!switchDock && dock == PositionConstants.EAST)
-									|| (switchDock && dock == PositionConstants.WEST))
+							else if ((!switchDock
+									&& dock == PositionConstants.EAST)
+									|| (switchDock
+											&& dock == PositionConstants.WEST))
 								cursor = DragCursors.RIGHT;
 							else
 								cursor = DragCursors.LEFT;
@@ -1005,7 +1019,8 @@ public class FlyoutPaletteComposite extends Composite {
 							tracker.setCursor(DragCursors.getCursor(cursor));
 							// update the rectangle only if it has changed
 							if (!tracker.getRectangles()[0].equals(placeHolder))
-								tracker.setRectangles(new Rectangle[] { placeHolder });
+								tracker.setRectangles(
+										new Rectangle[] { placeHolder });
 						}
 					});
 				}
@@ -1058,8 +1073,8 @@ public class FlyoutPaletteComposite extends Composite {
 				public void propertyChange(PropertyChangeEvent evt) {
 					if (evt.getPropertyName().equals(PROPERTY_STATE))
 						updateState();
-					else if (evt.getPropertyName().equals(
-							PROPERTY_DOCK_LOCATION))
+					else if (evt.getPropertyName()
+							.equals(PROPERTY_DOCK_LOCATION))
 						if (getVisible())
 							layout(true);
 				}
@@ -1124,8 +1139,8 @@ public class FlyoutPaletteComposite extends Composite {
 				0, 2);
 
 		public TitleLabel(boolean isHorizontal) {
-			super(GEFMessages.Palette_Label, InternalImages
-					.get(InternalImages.IMG_PALETTE));
+			super(GEFMessages.Palette_Label,
+					InternalImages.get(InternalImages.IMG_PALETTE));
 			setLabelAlignment(PositionConstants.LEFT);
 			setBorder(BORDER);
 			Label tooltip = new Label(getText());
@@ -1146,14 +1161,15 @@ public class FlyoutPaletteComposite extends Composite {
 			graphics.pushState();
 			org.eclipse.draw2d.geometry.Rectangle r = org.eclipse.draw2d.geometry.Rectangle.SINGLETON;
 			r.setBounds(getBounds());
-			graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+			graphics.setForegroundColor(
+					PaletteColorUtil.WIDGET_LIST_BACKGROUND);
 			graphics.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND);
 			graphics.fillGradient(r, true);
 
 			// draw bottom border
 			graphics.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
-			graphics.drawLine(r.getBottomLeft().getTranslated(0, -1), r
-					.getBottomRight().getTranslated(0, -1));
+			graphics.drawLine(r.getBottomLeft().getTranslated(0, -1),
+					r.getBottomRight().getTranslated(0, -1));
 
 			graphics.popState();
 
@@ -1166,8 +1182,8 @@ public class FlyoutPaletteComposite extends Composite {
 				// We reduce the width by 1 because FigureUtilities grows it by
 				// 1 unnecessarily
 				textBounds.width--;
-				graphics.drawFocus(bounds.getResized(-1, -1).intersect(
-						textBounds.getExpanded(getInsets())));
+				graphics.drawFocus(bounds.getResized(-1, -1)
+						.intersect(textBounds.getExpanded(getInsets())));
 			}
 		}
 	}
@@ -1190,11 +1206,11 @@ public class FlyoutPaletteComposite extends Composite {
 		private int getArrowDirection() {
 			int direction = PositionConstants.EAST;
 			if (isInState(STATE_EXPANDED | STATE_PINNED_OPEN))
-				direction = dock == PositionConstants.WEST ? PositionConstants.WEST
-						: PositionConstants.EAST;
+				direction = dock == PositionConstants.WEST
+						? PositionConstants.WEST : PositionConstants.EAST;
 			else
-				direction = dock == PositionConstants.WEST ? PositionConstants.EAST
-						: PositionConstants.WEST;
+				direction = dock == PositionConstants.WEST
+						? PositionConstants.EAST : PositionConstants.WEST;
 			if (isMirrored()) {
 				if (direction == PositionConstants.WEST)
 					direction = PositionConstants.EAST;
@@ -1231,8 +1247,8 @@ public class FlyoutPaletteComposite extends Composite {
 					if (evt.getPropertyName().equals(PROPERTY_STATE)) {
 						b.setDirection(getArrowDirection());
 						setToolTipText(getButtonTooltipText());
-					} else if (evt.getPropertyName().equals(
-							PROPERTY_DOCK_LOCATION))
+					} else if (evt.getPropertyName()
+							.equals(PROPERTY_DOCK_LOCATION))
 						b.setDirection(getArrowDirection());
 				}
 			});
@@ -1278,8 +1294,10 @@ public class FlyoutPaletteComposite extends Composite {
 
 				triangle = new Triangle();
 				triangle.setOutline(true);
-				triangle.setBackgroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
-				triangle.setForegroundColor(PaletteColorUtil.WIDGET_DARK_SHADOW);
+				triangle.setBackgroundColor(
+						PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+				triangle.setForegroundColor(
+						PaletteColorUtil.WIDGET_DARK_SHADOW);
 				setContents(triangle);
 			}
 
@@ -1305,15 +1323,17 @@ public class FlyoutPaletteComposite extends Composite {
 				graphics.pushState();
 				org.eclipse.draw2d.geometry.Rectangle r = org.eclipse.draw2d.geometry.Rectangle.SINGLETON;
 				r.setBounds(getBounds());
-				graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+				graphics.setForegroundColor(
+						PaletteColorUtil.WIDGET_LIST_BACKGROUND);
 				graphics.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND);
 				graphics.fillGradient(r, true);
 				graphics.popState();
 
 				// draw bottom border
-				graphics.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
-				graphics.drawLine(r.getBottomLeft().getTranslated(0, -1), r
-						.getBottomRight().getTranslated(0, -1));
+				graphics.setForegroundColor(
+						PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+				graphics.drawLine(r.getBottomLeft().getTranslated(0, -1),
+						r.getBottomRight().getTranslated(0, -1));
 			}
 		}
 	}
@@ -1590,47 +1610,50 @@ public class FlyoutPaletteComposite extends Composite {
 				ImageDescriptor mask = null;
 				switch (code) {
 				case LEFT:
-					source = PlatformUI
-							.getWorkbench()
-							.getSharedImages()
-							.getImageDescriptor(
-									ISharedImages.IMG_OBJS_DND_LEFT_SOURCE);
-					mask = PlatformUI
-							.getWorkbench()
-							.getSharedImages()
-							.getImageDescriptor(
-									ISharedImages.IMG_OBJS_DND_LEFT_MASK);
-					cursors[LEFT] = new Cursor(display, source.getImageData(),
-							mask.getImageData(), 16, 16);
+					//FIXME - IMAGES
+					// source = PlatformUI
+					// .getWorkbench()
+					// .getSharedImages()
+					// .getImageDescriptor(
+					// ISharedImages.IMG_OBJS_DND_LEFT_SOURCE);
+					// mask = PlatformUI
+					// .getWorkbench()
+					// .getSharedImages()
+					// .getImageDescriptor(
+					// ISharedImages.IMG_OBJS_DND_LEFT_MASK);
+					// cursors[LEFT] = new Cursor(display,
+					// source.getImageData(),
+					// mask.getImageData(), 16, 16);
 					break;
 				case RIGHT:
-					source = PlatformUI
-							.getWorkbench()
-							.getSharedImages()
-							.getImageDescriptor(
-									ISharedImages.IMG_OBJS_DND_RIGHT_SOURCE);
-					mask = PlatformUI
-							.getWorkbench()
-							.getSharedImages()
-							.getImageDescriptor(
-									ISharedImages.IMG_OBJS_DND_RIGHT_MASK);
-					cursors[RIGHT] = new Cursor(display, source.getImageData(),
-							mask.getImageData(), 16, 16);
+					// source = PlatformUI
+					// .getWorkbench()
+					// .getSharedImages()
+					// .getImageDescriptor(
+					// ISharedImages.IMG_OBJS_DND_RIGHT_SOURCE);
+					// mask = PlatformUI
+					// .getWorkbench()
+					// .getSharedImages()
+					// .getImageDescriptor(
+					// ISharedImages.IMG_OBJS_DND_RIGHT_MASK);
+					// cursors[RIGHT] = new Cursor(display,
+					// source.getImageData(),
+					// mask.getImageData(), 16, 16);
 					break;
 				default:
 				case INVALID:
-					source = PlatformUI
-							.getWorkbench()
-							.getSharedImages()
-							.getImageDescriptor(
-									ISharedImages.IMG_OBJS_DND_INVALID_SOURCE);
-					mask = PlatformUI
-							.getWorkbench()
-							.getSharedImages()
-							.getImageDescriptor(
-									ISharedImages.IMG_OBJS_DND_INVALID_MASK);
-					cursors[INVALID] = new Cursor(display,
-							source.getImageData(), mask.getImageData(), 16, 16);
+					// source = PlatformUI
+					// .getWorkbench()
+					// .getSharedImages()
+					// .getImageDescriptor(
+					// ISharedImages.IMG_OBJS_DND_INVALID_SOURCE);
+					// mask = PlatformUI
+					// .getWorkbench()
+					// .getSharedImages()
+					// .getImageDescriptor(
+					// ISharedImages.IMG_OBJS_DND_INVALID_MASK);
+					// cursors[INVALID] = new Cursor(display,
+					// source.getImageData(), mask.getImageData(), 16, 16);
 					break;
 				}
 			}

@@ -69,8 +69,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -101,8 +99,8 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  * @see org.eclipse.gef.palette.PaletteEntry
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer
  */
-public class PaletteCustomizerDialog extends Dialog implements
-		EntryPageContainer {
+public class PaletteCustomizerDialog extends Dialog
+		implements EntryPageContainer {
 
 	/**
 	 * The unique ID for the Apply Button. It can be used to retrieve that
@@ -310,8 +308,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 		widgets.put(new Integer(id), button);
 
 		if (descriptor != null) {
-			button.setImage(new Image(parent.getDisplay(), descriptor
-					.getImageData()));
+			button.setImage(
+					new Image(parent.getDisplay(), descriptor.getImageData()));
 			button.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
 					Image img = ((Button) e.getSource()).getImage();
@@ -536,15 +534,15 @@ public class PaletteCustomizerDialog extends Dialog implements
 				gc.setForeground(ColorConstants.buttonDarker);
 				gc.drawLine(area.x, area.y, area.x + area.width - 2, area.y);
 				gc.drawLine(area.x, area.y, area.x, area.y + area.height - 1);
-				gc.drawLine(area.x + area.width - 2, area.y, area.x
-						+ area.width - 2, area.y + area.height - 1);
+				gc.drawLine(area.x + area.width - 2, area.y,
+						area.x + area.width - 2, area.y + area.height - 1);
 				gc.setForeground(ColorConstants.buttonLightest);
 				gc.drawLine(area.x + 1, area.y + 1, area.x + area.width - 3,
 						area.y + 1);
-				gc.drawLine(area.x + area.width - 1, area.y + 1, area.x
-						+ area.width - 1, area.y + area.height - 1);
-				gc.drawLine(area.x + 1, area.y + 1, area.x + 1, area.y
-						+ area.height - 1);
+				gc.drawLine(area.x + area.width - 1, area.y + 1,
+						area.x + area.width - 1, area.y + area.height - 1);
+				gc.drawLine(area.x + 1, area.y + 1, area.x + 1,
+						area.y + area.height - 1);
 			}
 		});
 
@@ -552,8 +550,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 		ToolBarManager tbMgr = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
 		List actions = getOutlineActions();
 		for (int i = 0; i < actions.size(); i++) {
-			tbMgr.add(new ToolbarDropdownContributionItem(((IAction) actions
-					.get(i))));
+			tbMgr.add(new ToolbarDropdownContributionItem(
+					((IAction) actions.get(i))));
 		}
 		tbMgr.createControl(composite);
 		tbMgr.getControl().setFont(composite.getFont());
@@ -579,8 +577,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 	protected TreeViewer createOutlineTreeViewer(Composite composite) {
 		Tree treeForViewer = new Tree(composite, SWT.BORDER);
 		treeForViewer.setFont(composite.getFont());
-		GridData data = new GridData(GridData.FILL_VERTICAL
-				| GridData.HORIZONTAL_ALIGN_FILL);
+		GridData data = new GridData(
+				GridData.FILL_VERTICAL | GridData.HORIZONTAL_ALIGN_FILL);
 		data.widthHint = 185;
 		// Make the tree this tall even when there is nothing in it. This will
 		// keep the
@@ -638,8 +636,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 
 		propertiesPanelContainer = new PageBook(composite, SWT.NONE);
 		propertiesPanelContainer.setFont(composite.getFont());
-		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.FILL_VERTICAL);
+		GridData data = new GridData(
+				GridData.HORIZONTAL_ALIGN_FILL | GridData.FILL_VERTICAL);
 		data.horizontalSpan = 2;
 		propertiesPanelContainer.setLayoutData(data);
 		propertiesPanelContainer.addListener(SWT.Resize, new Listener() {
@@ -666,8 +664,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 		GridLayout layout;
 		PageBook book = new PageBook(parent, SWT.NONE);
 		book.setFont(parent.getFont());
-		book.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-				| GridData.VERTICAL_ALIGN_FILL));
+		book.setLayoutData(new GridData(
+				GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_FILL));
 
 		titlePage = new Composite(book, SWT.NONE);
 		titlePage.setFont(book.getFont());
@@ -694,8 +692,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 				return new Point(bounds.width, bounds.height);
 			}
 		};
-		intermediary.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-				| GridData.VERTICAL_ALIGN_FILL));
+		intermediary.setLayoutData(new GridData(
+				GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_FILL));
 		StackLayout stackLayout = new StackLayout();
 		intermediary.setLayout(stackLayout);
 		errorTitle = new MultiLineLabel(intermediary);
@@ -722,20 +720,22 @@ public class PaletteCustomizerDialog extends Dialog implements
 	 */
 	protected CLabel createSectionTitle(Composite composite, String text) {
 		CLabel cTitle = new CLabel(composite, SWT.LEFT);
-		Color background = JFaceColors.getBannerBackground(composite
-				.getDisplay());
-		Color foreground = JFaceColors.getBannerForeground(composite
-				.getDisplay());
+		Color background = JFaceColors
+				.getBannerBackground(composite.getDisplay());
+		Color foreground = JFaceColors
+				.getBannerForeground(composite.getDisplay());
 		JFaceColors.setColors(cTitle, foreground, background);
 		cTitle.setFont(JFaceResources.getBannerFont());
 		cTitle.setText(text);
-		cTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-				| GridData.VERTICAL_ALIGN_FILL));
+		cTitle.setLayoutData(new GridData(
+				GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_FILL));
 
 		if (titleImage == null) {
-			titleImage = new Image(composite.getDisplay(), ImageDescriptor
-					.createFromFile(Internal.class,
-							"icons/customizer_dialog_title.gif").getImageData()); //$NON-NLS-1$
+			titleImage = new Image(composite.getDisplay(),
+					ImageDescriptor
+							.createFromFile(Internal.class,
+									"icons/customizer_dialog_title.gif") //$NON-NLS-1$
+							.getImageData());
 			composite.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
 					titleImage.dispose();
@@ -747,8 +747,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 		Label imageLabel = new Label(composite, SWT.LEFT);
 		imageLabel.setBackground(background);
 		imageLabel.setImage(titleImage);
-		imageLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.VERTICAL_ALIGN_FILL));
+		imageLabel.setLayoutData(new GridData(
+				GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL));
 
 		Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
@@ -941,10 +941,9 @@ public class PaletteCustomizerDialog extends Dialog implements
 
 		if (errorMessage != null) {
 			MessageDialog dialog = new MessageDialog(getShell(),
-					PaletteMessages.ERROR,
-					null,
-					PaletteMessages.ABORT_PAGE_FLIPPING_MESSAGE
-							+ "\n" + errorMessage, //$NON-NLS-1$
+					PaletteMessages.ERROR, null,
+					PaletteMessages.ABORT_PAGE_FLIPPING_MESSAGE + "\n" //$NON-NLS-1$
+							+ errorMessage,
 					MessageDialog.ERROR,
 					new String[] { IDialogConstants.OK_LABEL }, 0);
 			dialog.open();
@@ -1065,8 +1064,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 			 * cannot fit in the dialog.
 			 */
 			if (!isSetup) {
-				Point newSize = getShell().computeSize(SWT.DEFAULT,
-						SWT.DEFAULT, true);
+				Point newSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT,
+						true);
 				int x = newSize.x - oldSize.x;
 				x = (x < 0) ? 0 : x;
 				int y = newSize.y - oldSize.y;
@@ -1134,12 +1133,13 @@ public class PaletteCustomizerDialog extends Dialog implements
 		public DeleteAction() {
 			setEnabled(false);
 			setText(PaletteMessages.DELETE_LABEL);
-			ISharedImages sharedImages = PlatformUI.getWorkbench()
-					.getSharedImages();
-			setImageDescriptor(sharedImages
-					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-			setDisabledImageDescriptor(sharedImages
-					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
+			//FIXME - IMAGES
+			// ISharedImages sharedImages = PlatformUI.getWorkbench()
+			// .getSharedImages();
+			// setImageDescriptor(sharedImages
+			// .getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+			// setDisabledImageDescriptor(sharedImages
+			// .getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 		}
 
 		public void run() {
@@ -1213,8 +1213,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 	/*
 	 * New Action
 	 */
-	private class NewAction extends PaletteCustomizationAction implements
-			IMenuCreator {
+	private class NewAction extends PaletteCustomizationAction
+			implements IMenuCreator {
 		private List factories;
 		private MenuManager menuMgr;
 
@@ -1229,8 +1229,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 			setText(PaletteMessages.NEW_LABEL);
 			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class,
 					"icons/add.gif")); //$NON-NLS-1$
-			setDisabledImageDescriptor(ImageDescriptor.createFromFile(
-					Internal.class, "icons/add-disabled.gif")); //$NON-NLS-1$
+			setDisabledImageDescriptor(ImageDescriptor
+					.createFromFile(Internal.class, "icons/add-disabled.gif")); //$NON-NLS-1$
 		}
 
 		private void addActionToMenu(Menu parent, IAction action) {
@@ -1337,8 +1337,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 			PaletteEntry selected = getSelectedPaletteEntry();
 			if (selected == null)
 				selected = getPaletteRoot();
-			PaletteEntry newEntry = factory
-					.createNewEntry(getShell(), selected);
+			PaletteEntry newEntry = factory.createNewEntry(getShell(),
+					selected);
 			treeviewer.setSelection(new StructuredSelection(newEntry), true);
 			updateActions();
 		}

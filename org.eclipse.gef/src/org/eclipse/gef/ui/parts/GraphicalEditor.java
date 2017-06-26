@@ -59,8 +59,8 @@ import org.eclipse.gef.ui.properties.UndoablePropertySheetPage;
  * 
  * @author hudsonr
  */
-public abstract class GraphicalEditor extends EditorPart implements
-		CommandStackListener, ISelectionListener {
+public abstract class GraphicalEditor extends EditorPart
+		implements CommandStackListener, ISelectionListener {
 
 	private static class ActionIDList extends ArrayList {
 		public boolean add(Object o) {
@@ -69,7 +69,8 @@ public abstract class GraphicalEditor extends EditorPart implements
 					IAction action = (IAction) o;
 					o = action.getId();
 					throw new IllegalArgumentException(
-							"Action IDs should be added to lists, not the action: " + action); //$NON-NLS-1$
+							"Action IDs should be added to lists, not the action: " //$NON-NLS-1$
+									+ action);
 				} catch (IllegalArgumentException exc) {
 					exc.printStackTrace();
 				}
@@ -109,8 +110,8 @@ public abstract class GraphicalEditor extends EditorPart implements
 	 * extend or override this method as needed.
 	 */
 	protected void configureGraphicalViewer() {
-		getGraphicalViewer().getControl().setBackground(
-				ColorConstants.listBackground);
+		getGraphicalViewer().getControl()
+				.setBackground(ColorConstants.listBackground);
 	}
 
 	/**
@@ -329,7 +330,8 @@ public abstract class GraphicalEditor extends EditorPart implements
 	 */
 	protected void hookGraphicalViewer() {
 		getSelectionSynchronizer().addViewer(getGraphicalViewer());
-		getSite().setSelectionProvider(getGraphicalViewer());
+		// FIXME - SelectionProvider
+		// getSite().setSelectionProvider(getGraphicalViewer());
 	}
 
 	/**
@@ -345,8 +347,9 @@ public abstract class GraphicalEditor extends EditorPart implements
 		setSite(site);
 		setInput(input);
 		getCommandStack().addCommandStackListener(this);
-		getSite().getWorkbenchWindow().getSelectionService()
-				.addSelectionListener(this);
+		// FIXME - SelectionService
+		// getSite().getWorkbenchWindow().getSelectionService()
+		// .addSelectionListener(this);
 		initializeActionRegistry();
 	}
 
